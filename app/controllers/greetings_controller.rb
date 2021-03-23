@@ -1,12 +1,14 @@
 class GreetingsController < ApplicationController
-  before_action :set_greeting, only: %i[ show edit update destroy ]
+  before_action :set_greeting, only: [:show, :edit, :update, :destroy]
 
-  # GET /greetings or /greetings.json
+  # GET /greetings
+  # GET /greetings.json
   def index
-    @greetings = Greeting.all
+    @greetings = Greeting.all.order(created_at: :desc)
   end
 
-  # GET /greetings/1 or /greetings/1.json
+  # GET /greetings/1
+  # GET /greetings/1.json
   def show
   end
 
@@ -19,39 +21,42 @@ class GreetingsController < ApplicationController
   def edit
   end
 
-  # POST /greetings or /greetings.json
+  # POST /greetings
+  # POST /greetings.json
   def create
     @greeting = Greeting.new(greeting_params)
 
     respond_to do |format|
       if @greeting.save
-        format.html { redirect_to @greeting, notice: "Greeting was successfully created." }
+        format.html { redirect_to root_path, notice: 'Message sent.' }
         format.json { render :show, status: :created, location: @greeting }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html { render :new }
         format.json { render json: @greeting.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # PATCH/PUT /greetings/1 or /greetings/1.json
+  # PATCH/PUT /greetings/1
+  # PATCH/PUT /greetings/1.json
   def update
     respond_to do |format|
       if @greeting.update(greeting_params)
-        format.html { redirect_to @greeting, notice: "Greeting was successfully updated." }
+        format.html { redirect_to @greeting, notice: 'Greeting was successfully updated.' }
         format.json { render :show, status: :ok, location: @greeting }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit }
         format.json { render json: @greeting.errors, status: :unprocessable_entity }
       end
     end
   end
 
-  # DELETE /greetings/1 or /greetings/1.json
+  # DELETE /greetings/1
+  # DELETE /greetings/1.json
   def destroy
     @greeting.destroy
     respond_to do |format|
-      format.html { redirect_to greetings_url, notice: "Greeting was successfully destroyed." }
+      format.html { redirect_to greetings_url, notice: 'Greeting was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
